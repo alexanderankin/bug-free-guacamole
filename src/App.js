@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import './leaflet-defaulticon-compatibility';
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import 'leaflet-geometryutil';
+// import 'leaflet-geometryutil';
 // import icon from 'leaflet-geometryutil';
 
 
@@ -15,7 +15,9 @@ import util from './util';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import TurfCutterContainerComponent from './TurfCutterContainerComponent';
 var isMarkerInsidePolygon = util.isMarkerInsidePolygon;
+
 
 class App extends Component {
   static propTypes = {
@@ -36,6 +38,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    return;
     // var map = L.map('map', { center: [43.00, -79.00], zoom: 10 });
     var map = L.map('map', { center: {lat: 42.886467369115, lng: -78.846173286438}, zoom: 15 });
     this.Lmap = map;
@@ -166,8 +169,12 @@ class App extends Component {
         </header>
         <div className="container">
           <div className="row">
+            <TurfCutterContainerComponent />
+
+          </div>
+          <div className="row">
             <div className="col-md-6">
-              <div id="map" style={{ height: 400, width: '100%' }}></div>
+              {/*<div id="map" style={{ height: 400, width: '100%' }}></div>*/}
             </div>
             <div className="col-md-6" style={{ border: '2px solid grey', borderRadius: 10, backgroundColor: 'lightgrey' }}>
 

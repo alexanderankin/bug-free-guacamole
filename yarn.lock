@@ -5750,14 +5750,7 @@ leaflet-draw@^1.0.4:
   resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.4.tgz#45be92f378ed253e7202fdeda1fcc71885198d46"
   integrity sha512-rsQ6saQO5ST5Aj6XRFylr5zvarWgzWnrg46zQ1MEOEIHsppdC/8hnN8qMoFvACsPvTioAuysya/TVtog15tyAQ==
 
-leaflet-geometryutil@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/leaflet-geometryutil/-/leaflet-geometryutil-0.9.1.tgz#1dd379d7923a8a625266181c1983910a8e8dfc02"
-  integrity sha512-DKYLzFBsEcmZSl1fXLM+Pd+7t5IHmY6Ps7XeSnWL1ngr1qxQfcVzhkJT9gxfZrmFWiL96c23xQ0aLcHocV2tVA==
-  dependencies:
-    leaflet ">=0.7.0"
-
-leaflet@>=0.7.0, leaflet@^1.5.1:
+leaflet@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
   integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
