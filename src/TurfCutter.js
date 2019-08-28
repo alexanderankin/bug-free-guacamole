@@ -32,23 +32,33 @@ class TurfCutter extends Component {
 
   componentDidMount() {
     var center = { lat: 42.886467369115, lng: -78.846173286438 };
+
+    // mapInstance
     var map = L.map('map', { center, zoom: 15 });
+    
+    // pointMarkers
+    map.createPane('pointMarkers');
+
+    // hack(s)
+    window.mymap = map;
     this.map = map;
+
     var tileLayerURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     L.tileLayer(tileLayerURL).addTo(map);
     var drawnItems = L.featureGroup().addTo(map);
+
+    // house featureGroup
     var houses = L.featureGroup().addTo(map);
 
-    function formatPopUpPoint(point) {
-      return "Point id[" + point.id + "]";
-    }
+    var formatPopUpPoint = point => "Point id[" + point.id + "]";
 
     this.props.points.forEach(house => {
-      var marker = new L.marker(house.coords, { house });
+      var marker = new L.marker(house.coords, { house, pane: 'pointMarkers' });
+      marker.id = 'Point_' + house.id;
       marker.isMarker = true;
       marker.addTo(houses);
       marker.bindPopup(formatPopUpPoint(house));
-      // window.houseMarkers.push(marker);
+      // marker.on('mouseover', function() { this.openPopup(); });
     });
 
     map.addControl(new L.Control.Draw({
@@ -71,34 +81,25 @@ class TurfCutter extends Component {
 
     // need to also do save (after edit)
     map.on(L.Draw.Event.DELETED, () => { console.log('L.Draw.Event.DELETED'); this.updateTurfPoints(); });
-    map.on(L.Draw.Event.CREATED, () => { console.log('L.Draw.Event.CREATED'); this.updateTurfPoints(); });
 
     map.on(L.Draw.Event.CREATED, function (event) {
       var layer = event.layer;
       layer.isTurf = true;
       drawnItems.addLayer(layer);
     });
+    map.on(L.Draw.Event.CREATED, () => { console.log('L.Draw.Event.CREATED'); this.updateTurfPoints(); });
+    map.on(L.Draw.Event.EDITED, () => { console.log('L.Draw.Event.EDITED'); this.updateTurfPoints(); });
 
-    window.t = function() { this.updateTurfPoints(); }.bind(this);
+    // pass pointers back up
+    this.props.cDMCallback({
+      mapInstance: map,
+      housesFeatureGroup: houses
+    });
 
-    // map.on(L.Draw.Event.DRAWSTOP, function (event) {
-    //   // remove listener
-    //   console.log("removing listener");
-    // });
-
-    // map.on(L.Draw.Event.DRAWSTART, function (event) {
-    //   // add listener to trigger the event on the map
-    //   var target = event.target;
-    //   document.addEventListener("keydown", function (ev) {
-    //     if (ev.key.toLowerCase() === 'enter') {
-    //       // target.completeShape();
-    //       console.log(target);
-    //     }
-    //   });
-    // });
+    // figure out complete with enter w/ L.Draw.Event.{DRAWSTOP,DRAWSTART}
   }
 
-  updateTurfPoints() {
+  async updateTurfPoints() {
     var map = this.map;
     window.map = map;
     if (!map)
@@ -107,7 +108,7 @@ class TurfCutter extends Component {
     var turfs = [];
     var turfMarkers = []; 
     map.eachLayer(l => { if (l.isTurf) { turfs.push(l); turfMarkers.push([]); }});
-    console.log("found", turfs.length, "turfs");
+    // console.log("found", turfs.length, "turfs");
 
     var markers = [];
     map.eachLayer(l => { if (l.isMarker) { markers.push(l); }});
@@ -118,18 +119,18 @@ class TurfCutter extends Component {
         var turf = turfs[turf_i];
 
         if (isMarkerInsidePolygon(marker, turf)) {
-          turfMarkers[turf_i].push({ mno: marker_i, m: marker });
-          // matches++;
-        }// else { console.log("no match"); }
+          turfMarkers[turf_i].push({ m_no: marker_i, m_id: marker.id, ops: marker.options });
+        }
       }
     }
-    console.log("calling this.props.turfCallback with", turfMarkers)
+
     this.props.turfCallback(turfMarkers);
+    return;
   }
 
   render() {
     return (
-      <div id="map" style={{ height: 400, width: 500 }}></div>
+      <div id="map" style={{ height: 400, width: '100%' }}></div>
     );
   }
 }

@@ -14,7 +14,7 @@ function isMarkerInsidePolygon(marker, poly) {
   var polyPoints = poly.getLatLngs()[0];
   var x = marker.getLatLng().lat, y = marker.getLatLng().lng;
 
-  console.log("looking for", x, y, "in polyPoints", polyPoints);
+  // console.log("looking for", x, y, "in polyPoints", polyPoints);
 
   var inside = false;
   for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
