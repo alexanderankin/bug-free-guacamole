@@ -2,6 +2,7 @@
   "name": "turf-cutter-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/turf-cutter-app",
   "dependencies": {
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
